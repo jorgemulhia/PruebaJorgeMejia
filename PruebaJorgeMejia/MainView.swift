@@ -13,9 +13,18 @@ struct MainView: View {
     // MARK: - View
     
     var body: some View {
-        VStack {
+        TabView {
+            VideoRecorderView()
+                .tabItem {
+                    Label("Grabar video", systemImage: "video")
+                }
             
+            CountryListView()
+                .tabItem {
+                    Label("Mapa", systemImage: "mappin.and.ellipse")
+                }
         }
+        .accentColor(.primary)
     }
 }
 
