@@ -53,7 +53,7 @@ enum ApiRequestManagerEndpoint {
         <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
           <soap12:Body>
             <GetEstadosbyPais xmlns="http://tempuri.org/">
-              <idEstado>int</idEstado>
+              <idEstado>%@</idEstado>
             </GetEstadosbyPais>
           </soap12:Body>
         </soap12:Envelope>
@@ -67,7 +67,7 @@ final class ApiRequestViewModel: ObservableObject {
     
     @Published var status: LoaderStatus = .loaded
     
-    func request(_ type: ApiRequestManagerEndpoint) async throws -> [ResponseModel] {
+    func request(_ type: ApiRequestManagerEndpoint, selectedCountry: String = "1") async throws -> [ResponseModel] {
         
         status = .loading
         
@@ -77,13 +77,11 @@ final class ApiRequestViewModel: ObservableObject {
             throw ApiRequestManagerError.invalidUrl
         }
         
+        let xmlRequest: String = type.xmlRequest.replacingOccurrences(of: "%@", with: "\(selectedCountry)")
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.httpBody = type.xmlRequest.data(using: .utf8)
-
-//        request.setValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-//        request.setValue(String(soapV1Message.count), forHTTPHeaderField: "Content-Length")
-//        request.setValue("http://tempuri.org/GetPaises", forHTTPHeaderField: "SOAPAction")
+        request.httpBody = xmlRequest.data(using: .utf8)
         request.setValue("application/soap+xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("length", forHTTPHeaderField: "Content-Length")
         

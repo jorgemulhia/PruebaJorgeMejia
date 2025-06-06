@@ -49,7 +49,7 @@ struct CountryListView: View {
             }
         }
         .sheet(isPresented: $showStateInfo) {
-            StateDetailView(countryName: selectedCountry?.nombrePais ?? "País")
+            StateDetailView(selectedCountry: selectedCountry)
                 .ignoresSafeArea()
         }
     }

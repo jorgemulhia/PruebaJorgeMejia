@@ -14,20 +14,12 @@ struct StateDetailView: View {
     
     // MARK: - Variables
     
-    @State var countryName: String
+    @State var selectedCountry: ResponseModel?
     
     // manager para los requests
     @StateObject private var apiRequestViewModel = ApiRequestViewModel()
     
-    // TODO: debido a que el servicio me regresa un 500, agregué estos markers temporalmente
-    @State private var states: [ResponseModel] = [
-        ResponseModel(idPais: "1", idEstado: "1", estadoNombre: "Ciudad de Mèxico", coordenadas: "19.3909832,-99.3084183"),
-        ResponseModel(idPais: "1", idEstado: "2", estadoNombre: "Quintana Roo", coordenadas: "19.7474896,-89.3225934"),
-        ResponseModel(idPais: "1", idEstado: "3", estadoNombre: "Monterrey", coordenadas: "25.6488994,-100.3914008"),
-        
-        ResponseModel(idPais: "2", idEstado: "4", estadoNombre: "San Francisco", coordenadas: "37.7577607,-122.4787993"),
-        ResponseModel(idPais: "2", idEstado: "5", estadoNombre: "Las Vegas", coordenadas: "36.1251645,-115.3398042"),
-    ]
+    @State private var states: [ResponseModel] = []
     @Environment(\.dismiss) private var dismiss
     
     // el id del pin seleccionado
@@ -70,7 +62,10 @@ struct StateDetailView: View {
         .task {
             // hacer el request al moemnto que se carga la pantalla
             do {
-                let response = try await apiRequestViewModel.request(.getStates)
+                let response = try await apiRequestViewModel.request(
+                    .getStates,
+                    selectedCountry: selectedCountry?.idPais ?? "1"
+                )
                 states = response
             } catch(let error) {
                 print(error)
@@ -92,6 +87,11 @@ struct StateDetailView: View {
                     .tint(Color.secondary)
                 }
             }
+            .onChange(of: selection) {
+                guard let selection else { return }
+                guard let item = states.first(where: { $0.orderId == selection }) else { return }
+                print(String(describing: item.coordenadas))
+            }
             .mapStyle(.standard(emphasis: .automatic, pointsOfInterest: .excludingAll))
             
             VStack {
@@ -104,7 +104,7 @@ struct StateDetailView: View {
                         withAnimation {
                             MapPreviewInfoView(
                                 info: item,
-                                countryName: countryName
+                                countryName: selectedCountry?.nombrePais ?? ""
                             )
                             .frame(height: 180)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -145,7 +145,7 @@ struct StateDetailView: View {
 
 struct StateDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        StateDetailView(countryName: "México")
+        StateDetailView(selectedCountry: ResponseModel(idPais: "1", nombrePais: "Mexico"))
     }
 }
 
