@@ -15,7 +15,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8C9247FC2DF2B11000D73600 /* Exceptions for "PruebaJorgeMejia" folder in "PruebaJorgeMejia" target */ = {
+		8C009E2E2DF3AB4E00EEAC54 /* Exceptions for "PruebaJorgeMejia" folder in "PruebaJorgeMejia" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -28,7 +28,7 @@
 		8C8E406D2DF22788003D5D4F /* PruebaJorgeMejia */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				8C9247FC2DF2B11000D73600 /* Exceptions for "PruebaJorgeMejia" folder in "PruebaJorgeMejia" target */,
+				8C009E2E2DF3AB4E00EEAC54 /* Exceptions for "PruebaJorgeMejia" folder in "PruebaJorgeMejia" target */,
 			);
 			path = PruebaJorgeMejia;
 			sourceTree = "<group>";
