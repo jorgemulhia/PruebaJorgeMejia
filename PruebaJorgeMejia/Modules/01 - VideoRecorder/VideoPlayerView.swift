@@ -30,6 +30,8 @@ struct VideoPlayerView: View {
             Color.background
 
             VStack {
+                
+                // boton de cerrar
                 HStack {
                     Spacer()
                     Button {
@@ -41,10 +43,12 @@ struct VideoPlayerView: View {
                     }
                 }
                 
+                // player
                 VideoPlayer(player: player)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .padding(.vertical, 20)
                 
+                // boton de play/pausa
                 Button {
                     if isPlaying {
                         player.pause()
