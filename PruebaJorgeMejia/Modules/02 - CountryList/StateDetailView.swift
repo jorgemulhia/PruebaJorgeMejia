@@ -14,7 +14,7 @@ struct StateDetailView: View {
     
     // MARK: - Variables
     
-    @State var selectedCountry: ResponseModel?
+    @State var selectedCountry: ResponseModel
     
     // manager para los requests
     @StateObject private var apiRequestViewModel = ApiRequestViewModel()
@@ -64,7 +64,7 @@ struct StateDetailView: View {
             do {
                 let response = try await apiRequestViewModel.request(
                     .getStates,
-                    selectedCountry: selectedCountry?.idPais ?? "1"
+                    selectedCountry: selectedCountry.idPais
                 )
                 states = response
             } catch(let error) {
@@ -79,7 +79,7 @@ struct StateDetailView: View {
     private func mapView() -> some View {
         ZStack {
             Map(selection: $selection) {
-                ForEach(states, id: \.orderId) { location in
+                ForEach(states, id: \.id) { location in
                     Marker(
                         location.estadoNombre ?? "",
                         coordinate: location.getCoordinates
@@ -89,7 +89,7 @@ struct StateDetailView: View {
             }
             .onChange(of: selection) {
                 guard let selection else { return }
-                guard let item = states.first(where: { $0.orderId == selection }) else { return }
+                guard let item = states.first(where: { $0.id == selection }) else { return }
                 print(String(describing: item.coordenadas))
             }
             .mapStyle(.standard(emphasis: .automatic, pointsOfInterest: .excludingAll))
@@ -98,13 +98,13 @@ struct StateDetailView: View {
                 Spacer()
                 HStack {
                     if let selection,
-                       let item = states.first(where: { $0.orderId == selection }) {
+                       let item = states.first(where: { $0.id == selection }) {
                         
                         // para mostrar la info y el street view
                         withAnimation {
                             MapPreviewInfoView(
                                 info: item,
-                                countryName: selectedCountry?.nombrePais ?? ""
+                                countryName: selectedCountry.nombrePais ?? ""
                             )
                             .frame(height: 180)
                             .clipShape(RoundedRectangle(cornerRadius: 10))

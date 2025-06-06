@@ -16,7 +16,6 @@ struct CountryListView: View {
     @StateObject private var apiRequestViewModel = ApiRequestViewModel()
     @State private var countries: [ResponseModel] = []
     @State private var selectedCountry: ResponseModel?
-    @State private var showStateInfo: Bool = false
     
     // MARK: - View
     
@@ -48,8 +47,8 @@ struct CountryListView: View {
                 print(error)
             }
         }
-        .sheet(isPresented: $showStateInfo) {
-            StateDetailView(selectedCountry: selectedCountry)
+        .sheet(item: $selectedCountry) { country in
+            StateDetailView(selectedCountry: country)
                 .ignoresSafeArea()
         }
     }
@@ -75,7 +74,6 @@ struct CountryListView: View {
                         id: item.idPais,
                         name: item.nombrePais ?? "") {
                             selectedCountry = item
-                            showStateInfo.toggle()
                         }
                 }
             }
