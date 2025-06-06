@@ -15,7 +15,7 @@ La app se divide en 2 secciones
 
 
 ##Tareas por mejorar
-- El request para obtener los estados no me funcionó
+- (Resuelto)--El request para obtener los estados no me funcionó--
 - Unit test
 
 
